@@ -30,6 +30,9 @@ class ListWeather {
 
     @SerializedName("wind")
     var wind: Wind? = null
+
+    @SerializedName("dt_txt")
+    var date: String? = null
 }
 
 class Rain {

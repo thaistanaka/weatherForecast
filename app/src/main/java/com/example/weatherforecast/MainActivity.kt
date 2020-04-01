@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        getLocation()
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        adapter = WeatherAdapter(this)
+        getLocation()
+
+        adapter = WeatherAdapter()
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         val itemDecoration: RecyclerView.ItemDecoration =

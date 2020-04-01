@@ -17,16 +17,13 @@ import kotlin.coroutines.CoroutineContext
 
 class WeatherViewModel(application: Application, lat: MutableLiveData<String>, lon: MutableLiveData<String>):
     AndroidViewModel(application) {
-    private var viewModelJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = viewModelJob + Dispatchers.Main
     val weatherForecast = MutableLiveData<WeatherForecast>()
     val api = "35caeb2864260ad004cd15422eecd232"
     val unit = "metric"
 
     init {
-        var latitude: String = lat.value.toString()
-        var longitude: String = lon.value.toString()
+        val latitude: String = lat.value.toString()
+        val longitude: String = lon.value.toString()
 
         val call =
             RetrofitInitializer().weatherService().getCurrentWeatherData(latitude, longitude, api, unit)
@@ -44,9 +41,5 @@ class WeatherViewModel(application: Application, lat: MutableLiveData<String>, l
 
     fun updateWeather(weather: WeatherForecast?) {
         weatherForecast.value = weather
-    }
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }
