@@ -9,6 +9,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -56,5 +60,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     implementation 'com.android.databinding:compiler:2.3.1'
+    implementation("com.squareup.okhttp3:okhttp:4.4.0")
 
 }

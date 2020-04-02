@@ -26,7 +26,7 @@ class WeatherViewModel(application: Application, lat: MutableLiveData<String>, l
         val longitude: String = lon.value.toString()
 
         val call =
-            RetrofitInitializer().weatherService().getCurrentWeatherData(latitude, longitude, api, unit)
+            RetrofitInitializer(application).weatherService().getCurrentWeatherData(latitude, longitude, api, unit)
         call.enqueue(object: Callback<WeatherForecast> {
             override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
             }
