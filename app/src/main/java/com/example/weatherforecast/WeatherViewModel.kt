@@ -15,7 +15,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
-class WeatherViewModel(application: Application, lat: MutableLiveData<String>, lon: MutableLiveData<String>):
+class WeatherViewModel(
+    application: Application,
+    lat: MutableLiveData<String>,
+    lon: MutableLiveData<String>
+) :
     AndroidViewModel(application) {
     val weatherForecast = MutableLiveData<WeatherForecast>()
     val api = "35caeb2864260ad004cd15422eecd232"
@@ -26,13 +30,17 @@ class WeatherViewModel(application: Application, lat: MutableLiveData<String>, l
         val longitude: String = lon.value.toString()
 
         val call =
-            RetrofitInitializer(application).weatherService().getCurrentWeatherData(latitude, longitude, api, unit)
-        call.enqueue(object: Callback<WeatherForecast> {
+            RetrofitInitializer(application).weatherService()
+                .getCurrentWeatherData(latitude, longitude, api, unit)
+        call.enqueue(object : Callback<WeatherForecast> {
             override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
             }
 
-            override fun onResponse(call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
-                if(response.code() == 200){
+            override fun onResponse(
+                call: Call<WeatherForecast>,
+                response: Response<WeatherForecast>
+            ) {
+                if (response.code() == 200) {
                     updateWeather(response.body())
                 }
             }

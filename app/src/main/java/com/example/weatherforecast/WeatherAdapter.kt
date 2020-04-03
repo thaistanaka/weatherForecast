@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
-class WeatherAdapter (): RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
+class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>() {
     private var listWeather = emptyList<ListWeather>()
 
-    inner class WeatherViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView){
+    inner class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val temp: TextView = itemView.findViewById(R.id.temp)
         val minTemp: TextView = itemView.findViewById(R.id.minTemp)
         val maxTemp: TextView = itemView.findViewById(R.id.maxTemp)
@@ -27,11 +25,11 @@ class WeatherAdapter (): RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
         return WeatherViewHolder(itemView)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val weather = listWeather[position]
@@ -40,26 +38,32 @@ class WeatherAdapter (): RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>(
         holder.maxTemp.text = "Temp Max: " + weather.main?.temp_max.toString()
         holder.humidity.text = "Humidity: " + weather.main?.humidity.toString()
 
-        if(weather.rain?.h3 == null){
+        if (weather.rain?.h3 == null) {
             holder.rain.visibility = View.GONE
         } else {
             holder.rain.visibility = View.VISIBLE
             holder.rain.text = "Rain: " + weather.rain?.h3.toString()
         }
 
-        if(weather.snow?.h3 == null){
+        if (weather.snow?.h3 == null) {
             holder.snow.visibility = View.GONE
         } else {
             holder.snow.visibility = View.VISIBLE
-            holder.snow.text = "Snow: " +  weather.snow?.h3.toString()
+            holder.snow.text = "Snow: " + weather.snow?.h3.toString()
         }
         holder.wind.text = "Wind: " + weather.wind?.speed.toString()
         val dateTime = weather.date!!
-        val ldt: LocalDateTime = LocalDateTime.parse(
-            dateTime,
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        )
-        holder.time.text = ldt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val ldt: LocalDateTime =
+                LocalDateTime.parse(
+                    dateTime,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                )
+            holder.time.text =
+                ldt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")).toString()
+        } else {
+            holder.time.text = dateTime
+        }
     }
 
     fun setWeatherList(listWeather: List<ListWeather>) {
